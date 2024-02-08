@@ -1,0 +1,9 @@
+{
+  "type": "module",
+  "dependencies": {
+    "openai": "^4.26.1"
+  },
+  "scripts": {
+    "start": "node --env-file=.env main.js"
+  }
+}
