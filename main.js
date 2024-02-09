@@ -39,16 +39,27 @@ async function checkDb() {
 /** @param {string} term */
 async function main(term) {
   await checkDb();
-  /** @type {Array<OpenAI.Chat.Completions.ChatCompletion> } */
+
+  /** @type {Array<OpenAI.Chat.Completions.ChatCompletion & { meta: { term: string }}> } */
   const json = JSON.parse(await fs.readFile("db.json", "utf-8"));
+
+  const cached = json.find((def) => def.meta.term === term);
+  if (cached) {
+    console.log(cached.choices[0].message.content);
+    return;
+  }
+
   const content = `What is a definition for "${term}"?`;
   const res = await request(content);
+
   res.meta = {
     content,
     term,
   };
+
   console.log(res.choices[0].message.content);
   console.log("\nSaving to `db.json`...");
+
   json.push(res);
   await fs.writeFile("db.json", JSON.stringify(json, null, 2), "utf-8");
 }
@@ -59,4 +70,4 @@ if (term.length !== 1) {
   throw Error(`Malformed input. Usage: npm run start "term goes here".`);
 }
 
-main(term);
+main(term[0].toLowerCase());
