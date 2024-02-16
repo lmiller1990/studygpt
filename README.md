@@ -34,6 +34,14 @@ An amino acid is a building block of proteins, consisting of a central carbon at
 Saving to `db.json`...
 ```
 
+## Topics
+
+Associate a term with a topic!
+
+```sh
+npm run start -- --topic "genomics" "sanger sequencing"
+```
+
 # Roadmap
 
 - Binary
